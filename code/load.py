@@ -15,40 +15,38 @@ ID = 1
 datapath = '../data/'
 
 # partitions
-partition_dict = {}
-num_partitions = 2
+num_partitions = 3
 
 # Load namenode data
 for dataname in tqdm(os.listdir(datapath)):
     folderpath = datapath + dataname
     foldername = folderpath.split('/')[-1]
-    rng_partition = random.randrange(1,num_partitions+1)
-    partition_val = "partition"+str(rng_partition)
-    partition_dict[foldername] = partition_val
     for file in os.listdir(folderpath):
         filename = file.split('.')[0]
         final_URL = NAMENODEURL + foldername + '/' + filename + '.json'
-        cid = file
-        datanode_path = DATANODEURL + partition_val + '/' + foldername + '/' + filename
-        TYPE = 'FILE'
-        file_obj = {
-            'id': ID,
-            'type': TYPE,
-            'name': file,
-            'location': datanode_path
-        }
-        file_obj = json.dumps(file_obj, cls=NumpyEncoder)
-        # print(final_URL)
-        # print(file_obj)
-        # increase ID global count 
-        ID += 1
-        requests.put(final_URL, file_obj)
+        res = {}
+        for i in range(1,num_partitions+1):
+            res["p"+str(i)] = {}
+        for i in range(1,num_partitions+1):
+            datanode_path = DATANODEURL + foldername + '/' + filename + '_p' + str(i)
+            TYPE = 'FILE'
+            file_obj = {
+                'id': ID,
+                'type': TYPE,
+                'name': file,
+                'location': datanode_path
+            }
+            # increase ID global count 
+            ID += 1
+            res["p"+str(i)] = file_obj
+
+        res = json.dumps(res, cls=NumpyEncoder)    
+        requests.put(final_URL, res)
 
 # Load datanode data
 for dataname in tqdm(os.listdir(datapath)):
     folderpath = datapath + dataname
     foldername = folderpath.split('/')[-1]
-    partition_val = partition_dict[foldername]
     for file in os.listdir(folderpath):
         filepath = folderpath + '/' + file
         filename = file.split('.')[0]
@@ -57,21 +55,34 @@ for dataname in tqdm(os.listdir(datapath)):
         # data = data[:2]
         columns= data.columns
 
-        # Collecting data
-        json_obj = []
-        for i in tqdm(range(data.shape[0])):
-            cdict = {}
-            for j in range(len(columns)):
-                cdict[columns[j]] = data.loc[i][columns[j]]
+        data_p1 = data[:len(data)//3]
+        data_p2 = data[len(data)//3:len(data)//3*2]
+        data_p3 = data[len(data)//3*2:len(data)]
+        data_p1.reset_index(drop=True, inplace=True)
+        data_p2.reset_index(drop=True, inplace=True)
+        data_p3.reset_index(drop=True, inplace=True)
+        data_stack = [data_p1, data_p2, data_p3]
 
-            json_obj.append(cdict)
+        # print(data.shape, data_stack[2].shape)
+        
+        for num in range(1, num_partitions+1):
+            # Collecting data
+            json_obj = []
+            for i in tqdm(range(data_stack[num-1].shape[0])):
+                cdict = {}
+                for j in range(len(columns)):
+                    cdict[columns[j]] = data_stack[num-1].loc[i][columns[j]]
 
-        final_URL = DATANODEURL + partition_val + '/' + foldername + '/' + filename + '.json'
-        print(final_URL)
-        # print(json_obj)
-        # Load data in the Firebase database
-        obj = json.dumps(json_obj, cls=NumpyEncoder)
-        requests.put(final_URL, obj)
+                json_obj.append(cdict)
+
+            final_URL = DATANODEURL + foldername + '/' + filename + '_p' + str(num) + '.json'
+            print(final_URL)
+            # print(json_obj)
+            # Load data in the Firebase database
+            obj = json.dumps(json_obj, cls=NumpyEncoder)
+            requests.put(final_URL, obj)
+
+## TEST
 
 # data = pd.read_csv('../data/Mental Health in Tech Survey/survey2.csv', index_col=0)
 # # data = data[:2]
