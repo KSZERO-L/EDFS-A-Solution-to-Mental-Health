@@ -10,8 +10,6 @@ import random
 NAMENODEURL = 'https://edfs-dd402-default-rtdb.firebaseio.com/EDFS/namenode/'
 DATANODEURL = 'https://edfs-dd402-default-rtdb.firebaseio.com/EDFS/datanode/'
 
-ID = 1
-
 datapath = '../data/'
 
 # partitions
@@ -31,13 +29,12 @@ for dataname in tqdm(os.listdir(datapath)):
             datanode_path = DATANODEURL + foldername + '/' + filename + '_p' + str(i)
             TYPE = 'FILE'
             file_obj = {
-                'id': ID,
+                'id': random.randint(100000000000, 999999999999),
                 'type': TYPE,
                 'name': file,
                 'location': datanode_path
             }
-            # increase ID global count 
-            ID += 1
+
             res["p"+str(i)] = file_obj
 
         res = json.dumps(res, cls=NumpyEncoder)    
