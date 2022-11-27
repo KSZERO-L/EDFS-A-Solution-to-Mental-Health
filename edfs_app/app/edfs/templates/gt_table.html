@@ -1,0 +1,16 @@
+<table class="gt_table">
+    <thead>
+      <tr>
+        <th data-type="text-short">Location <span class="resize-handle"></span></th>
+        <th data-type="text-short">Type<span class="resize-handle"></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+          <tr>
+              <td>{{ d.location }}</td>
+              <td>{{ d.type }}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+<table class="gt_table">
+    <thead>
+      <tr>
+        <th data-type="text-short">File <span class="resize-handle"></span></th>
+        <th data-type="text-short">Partition Location<span class="resize-handle"></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+          <tr>
+              <td>{{ d.file }}</td>
+              <td>{{ d.location }}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+</table>

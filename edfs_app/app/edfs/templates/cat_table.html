@@ -1,0 +1,22 @@
+<table class="cat_table">
+    <thead>
+      <tr>
+        <th data-type="text-short">{{ cols.col0 }} <span class="resize-handle"></span></th>
+        <th data-type="text-short">{{ cols.col1 }} <span class="resize-handle"></span></th>
+        <th data-type="text-short">{{ cols.col2 }} <span class="resize-handle"></span></th>
+        <th data-type="text-short">{{ cols.col3 }} <span class="resize-handle"></span></th>
+        <th data-type="text-short">{{ cols.col4 }} <span class="resize-handle"></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+          <tr>
+              <td>{{ d.col0 }}</td>
+              <td>{{ d.col1 }}</td>
+              <td>{{ d.col2 }}</td>
+              <td>{{ d.col3 }}</td>
+              <td>{{ d.col4 }}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+</table>

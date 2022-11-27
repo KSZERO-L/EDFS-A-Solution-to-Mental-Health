@@ -1,1 +1,7 @@
 lab2_env
+edfs_app/venv
+edfs_app/app/db.sqlite3
+edfs_app/app/app/__pycache__/*
+edfs_app/app/edfs/__pycache__/*
+edfs_app/app/edfs/firebase_cmd/__pycache__/*
+edfs-dd402-default-rtdb-export.json
