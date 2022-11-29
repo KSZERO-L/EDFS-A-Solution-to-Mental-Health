@@ -33,6 +33,8 @@ input[type=submit]:hover {
 }
 
 div {
+  margin-left: 10%;
+  margin-right: 10%;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
@@ -53,7 +55,8 @@ div {
   }
   
   table.gt_table {
-    min-width: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
     width: auto;
     flex: 1;
     display: grid;
@@ -65,7 +68,8 @@ div {
   }
 
   table.cat_table {
-    min-width: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
     width: auto;
     flex: 1;
     display: grid;
@@ -141,22 +145,82 @@ div {
 
 </style>
 <body>
-    <h2 style="padding:20px">EDFS Command Line</h2>
+    <h2 style="padding:20px; margin-left:40%">EDFS Command Line</h2>
     <div>
-      <form id="form" action="" method="POST">
+      <form id="form" action="/form_ajax/" method="POST">
         {% csrf_token %}
         <label for="command_input_label">Command Line</label>
         <input type="text" id="command_input" name="command_input" placeholder="Enter a command...">
-
+        <label for="label">EDFS Type</label>
+        <select id="type" name="type">
+            <option value="" disabled selected>Select your option</option>
+            <option value="Firebase">Firebase</option>
+            <option value="SQL">SQL</option>
+        </select>
         <input type="submit" value="Submit">
       </form>
     </div>
 
-    <div id="output1"></div>
     <div id="output2"></div>
+
+
+    <h2 style="padding:20px; margin-left:45%">Search</h2>
+    <div>
+      <form id="form2" action="/form_ajax2/" method="POST">
+        {% csrf_token %}
+        <label for="select">Select feature (Add multiple sep by ',')</label>
+        <input type="text" id="select" name="select" placeholder="Enter feature...">
+        <label for="command_input_label">Select table</label>
+        <input type="text" id="from" name="from" placeholder="Enter table...">
+        <label for="command_input_label">Where feature</label>
+        <input type="text" id="where" name="where" placeholder="Enter feature...">
+        <label for="command_input_label">Conditional Sign</label>
+        <input type="text" id="sign" name="sign" placeholder="Enter sign...">
+        <label for="command_input_label">Conditional Value</label>
+        <input type="text" id="value" name="value" placeholder="Enter value...">
+        <label for="label">EDFS Type</label>
+        <select id="type" name="type">
+            <option value="" disabled selected>Select your option</option>
+            <option value="Firebase">Firebase</option>
+            <option value="SQL">SQL</option>
+        </select>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+
+    <div id="output3"></div>
+
+
+    <h2 style="padding:20px; margin-left:45%">Analytics</h2>
+    <div>
+      <form id="form3" action="" method="POST">
+        {% csrf_token %}
+        <label for="label">Select Question</label>
+        <select id="q" name="q">
+            <option value="" disabled selected>Select your option</option>
+            <option value="q1">what is the prevalence of the depression disorder based on different entities(countries)?</option>
+            <option value="q2">what is the number of psychiatrists and psychologists in different countries?</option>
+            <option value="q3">what is the composition of mental health consequence?</option>
+            <option value="q4">what is the happiness score in different countries for 2018?</option>
+        </select>
+        <label for="label">EDFS Type</label>
+        <select id="type" name="type">
+            <option value="" disabled selected>Select your option</option>
+            <option value="Firebase">Firebase</option>
+            <option value="SQL">SQL</option>
+        </select>
+        <input type="submit" value="Submit">
+      </form>
+      <div id="output4" class="center"></div>
+    </div>
+
+    
 
     <!--JS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="{% static 'edfs/js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'edfs/js/index2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'edfs/js/index3.js' %}"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </body>
 </html>
